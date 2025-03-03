@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  - push
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm clean-install
+
+      - name: Check types
+        run: npm run types:check
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Check linting
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check

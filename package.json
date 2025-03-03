@@ -17,6 +17,7 @@
     "test": "node --experimental-strip-types --env-file=.env.test --test",
     "test:watch": "npm run test -- --watch",
     "format": "prettier . --write --list-different",
+    "types:check": "tsc --noEmit",
     "format:check": "prettier . --list-different",
     "lint": "eslint ."
   },
