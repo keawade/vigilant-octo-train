@@ -9,9 +9,9 @@ import {
   noCoinsRule,
   processReceipt,
   quartersRule,
-} from "../src/rules.ts";
+} from "../../src/rules.ts";
 import assert from "node:assert";
-import type { Receipt } from "../src/receiptSchema";
+import type { Receipt } from "../../src/receiptSchema.ts";
 
 const fixture: Receipt = {
   retailer: "",

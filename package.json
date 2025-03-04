@@ -14,8 +14,8 @@
   "scripts": {
     "start": "node --experimental-strip-types src/main.ts",
     "start:dev": "node --experimental-strip-types --env-file=.env --watch src/main.ts",
-    "test": "node --experimental-strip-types --env-file=.env.test --test",
-    "test:watch": "npm run test -- --watch",
+    "test:unit": "node --experimental-strip-types --env-file=.env.test --test test/unit/**/*.test.{cts,mts,ts}",
+    "test:integration": "node --experimental-strip-types --env-file=.env.test --test test/integration/**/*.test.{cts,mts,ts}",
     "format": "prettier . --write --list-different",
     "types:check": "tsc --noEmit",
     "format:check": "prettier . --list-different",
