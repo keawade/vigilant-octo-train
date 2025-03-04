@@ -40,6 +40,8 @@ docker build . -t receipt-processor:1
 docker run -p 3000:3000 receipt-processor:1
 ```
 
+![Screenshot of the application running in Docker.](docs/screenshot-container.png)
+
 ### On bare metal
 
 If you have Node.js v22.6+ installed, you can set up and run with these commands:
@@ -48,6 +50,8 @@ If you have Node.js v22.6+ installed, you can set up and run with these commands
 npm ci
 npm run start:dev
 ```
+
+![Screenshot of the application running on bare metal.](docs/screenshot-local.png)
 
 ## Tests
 
