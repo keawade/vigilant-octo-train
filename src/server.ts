@@ -6,12 +6,12 @@ import { logger } from "./tooling/logger.ts";
 import { db } from "./db.ts";
 import { receiptSchema } from "./receiptSchema.ts";
 import { processReceipt } from "./processReceipt.ts";
+import { z } from "zod";
 
 export const createServer = () => {
   const server = Fastify({ loggerInstance: logger });
 
   server.post("/receipts/process", async (request, reply) => {
-    request.log.info({ body: request.body }, "howdy");
     const parseResponse = receiptSchema.safeParse(request.body);
 
     if (!parseResponse.success) {
@@ -21,26 +21,24 @@ export const createServer = () => {
     const receipt = parseResponse.data;
     const id = randomUUID();
 
-    db.set(id, { receipt });
+    const points = await processReceipt(receipt);
+    db.set(id, { receipt, points: points });
 
-    const points = processReceipt(receipt);
-
-    reply.send({ id });
-
-    db.set(id, { receipt, points: await points });
+    return reply.send({ id });
   });
 
   server.get("/receipts/:id/points", (request, reply) => {
-    const { id } = request.params;
-
-    const data = db.get(id);
-
-    if (data === undefined) {
+    const parseResponse = z
+      .object({ id: z.string().uuid() })
+      .safeParse(request.params);
+    if (!parseResponse.success) {
       return reply.code(404).send({ message: "Not found." });
     }
 
-    if (data.points === undefined) {
-      return reply.code(404).send({ message: "Not ready yet." });
+    const data = db.get(parseResponse.data.id);
+
+    if (data === undefined) {
+      return reply.code(404).send({ message: "Not found." });
     }
 
     return reply.send({ points: data.points });
