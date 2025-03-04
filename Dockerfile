@@ -1,11 +1,11 @@
-FROM node:22.14.0-bullseye AS build
+FROM node:22.14.0-bookworm AS build
 
 WORKDIR /usr/src/app
 
 COPY package*.json .
 RUN npm clean-install --omit=dev
 
-FROM node:22.14.0-bullseye-slim AS production
+FROM node:22.14.0-bookworm-slim AS production
 
 ENV NODE_ENV=production
 # TODO: Remove after upgrading to Node 24
