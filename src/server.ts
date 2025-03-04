@@ -5,7 +5,7 @@ import { default as Fastify } from "fastify";
 import { logger } from "./tooling/logger.ts";
 import { db } from "./db.ts";
 import { receiptSchema } from "./receiptSchema.ts";
-import { processReceipt } from "./processReceipt.ts";
+import { processReceipt } from "./rules.ts";
 import { z } from "zod";
 
 export const createServer = () => {
@@ -21,8 +21,7 @@ export const createServer = () => {
     const receipt = parseResponse.data;
     const id = randomUUID();
 
-    const points = await processReceipt(receipt);
-    db.set(id, { receipt, points: points });
+    db.set(id, { receipt, points: processReceipt(receipt) });
 
     return reply.send({ id });
   });

@@ -29,9 +29,9 @@ describe("Receipt processing rules", () => {
     ];
 
     for (const testCase of testCases) {
-      it(`should reward ${testCase.points} points for the retailer name '${testCase.name}'.`, async () => {
+      it(`should reward ${testCase.points} points for the retailer name '${testCase.name}'.`, () => {
         assert.equal(
-          await bigNameRule({ ...fixture, retailer: testCase.name }),
+          bigNameRule({ ...fixture, retailer: testCase.name }),
           testCase.points,
         );
       });
@@ -49,9 +49,9 @@ describe("Receipt processing rules", () => {
     ];
 
     for (const testCase of testCases) {
-      it(`should reward ${testCase.points} points for ${testCase.total} total dollar amount.`, async () => {
+      it(`should reward ${testCase.points} points for ${testCase.total} total dollar amount.`, () => {
         assert.equal(
-          await noCoinsRule({ ...fixture, total: testCase.total }),
+          noCoinsRule({ ...fixture, total: testCase.total }),
           testCase.points,
         );
       });
@@ -78,9 +78,9 @@ describe("Receipt processing rules", () => {
     ];
 
     for (const testCase of testCases) {
-      it(`should reward ${testCase.points} points for ${testCase.total} total dollar amount.`, async () => {
+      it(`should reward ${testCase.points} points for ${testCase.total} total dollar amount.`, () => {
         assert.equal(
-          await quartersRule({ ...fixture, total: testCase.total }),
+          quartersRule({ ...fixture, total: testCase.total }),
           testCase.points,
         );
       });
@@ -104,9 +104,9 @@ describe("Receipt processing rules", () => {
     ];
 
     for (const testCase of testCases) {
-      it(`should reward ${testCase.points} points for a receipt with ${testCase.items.length} items.`, async () => {
+      it(`should reward ${testCase.points} points for a receipt with ${testCase.items.length} items.`, () => {
         assert.equal(
-          await everyTwoItemsRule({ ...fixture, items: testCase.items }),
+          everyTwoItemsRule({ ...fixture, items: testCase.items }),
           testCase.points,
         );
       });
@@ -140,9 +140,9 @@ describe("Receipt processing rules", () => {
     ];
 
     for (const testCase of testCases) {
-      it(`should reward ${testCase.points} points for item names of '${testCase.items.map((item) => item.shortDescription).join("', '")}'.`, async () => {
+      it(`should reward ${testCase.points} points for item names of '${testCase.items.map((item) => item.shortDescription).join("', '")}'.`, () => {
         assert.equal(
-          await itemNameLengthRule({ ...fixture, items: testCase.items }),
+          itemNameLengthRule({ ...fixture, items: testCase.items }),
           testCase.points,
         );
       });
@@ -159,9 +159,9 @@ describe("Receipt processing rules", () => {
     ];
 
     for (const testCase of testCases) {
-      it(`should reward ${testCase.points} points for purchase date of '${testCase.date}'.`, async () => {
+      it(`should reward ${testCase.points} points for purchase date of '${testCase.date}'.`, () => {
         assert.equal(
-          await dateDayRule({ ...fixture, purchaseDate: testCase.date }),
+          dateDayRule({ ...fixture, purchaseDate: testCase.date }),
           testCase.points,
         );
       });
@@ -182,12 +182,14 @@ describe("Receipt processing rules", () => {
     ];
 
     for (const testCase of testCases) {
-      it(`should reward ${testCase.points} points for purchase time of '${testCase.time}'.`, async () => {
+      it(`should reward ${testCase.points} points for purchase time of '${testCase.time}'.`, () => {
         assert.equal(
-          await midAfternoonRule({ ...fixture, purchaseTime: testCase.time }),
+          midAfternoonRule({ ...fixture, purchaseTime: testCase.time }),
           testCase.points,
         );
       });
     }
   });
 });
+
+describe("Complete receipt processing", () => {});
