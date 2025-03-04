@@ -73,7 +73,11 @@ checks, linter checks, unit tests, and integration tests.
 
 The CI runs can be found [on Github under the Actions tab][gh-actions].
 
-[gh-actions]: https://github.com/keawade/vigilant-octo-train/actions
+## API client collection
+
+The `bruno/` directory contains an API client collection usable with [Bruno][bruno].
+
+![Screenshot of the provided Bruno collection.](docs/screenshot-bruno.png)
 
 ## Platform choices
 
@@ -83,3 +87,6 @@ The CI runs can be found [on Github under the Actions tab][gh-actions].
 - Fastify for modern and performant HTTP server implementation
 - `node:test` for low configuration testing
 - Zod for fast and ergonomic validation
+
+[gh-actions]: https://github.com/keawade/vigilant-octo-train/actions
+[bruno]: https://www.usebruno.com/
