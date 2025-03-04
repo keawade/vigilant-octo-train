@@ -23,7 +23,7 @@ jobs:
         run: npm run types:check
 
       - name: Run unit tests
-        run: npm run test
+        run: npm run test:unit
 
       - name: Check linting
         run: npm run lint
