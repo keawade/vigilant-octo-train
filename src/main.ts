@@ -17,4 +17,4 @@ const closeGracefully = async (signal: NodeJS.Signals) => {
 process.once("SIGINT", closeGracefully);
 process.once("SIGTERM", closeGracefully);
 
-await server.listen({ port: env.PORT });
+await server.listen({ host: "0.0.0.0", port: env.PORT });
