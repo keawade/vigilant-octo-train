@@ -1,0 +1,15 @@
+meta {
+  name: Get Points
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/receipts/{{id}}/points
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  id: ed2efe5d-adce-4db3-87ed-83adc1b6a549
+}
