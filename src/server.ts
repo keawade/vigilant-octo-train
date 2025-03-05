@@ -21,13 +21,15 @@ export const createServer = () => {
     const receipt = parseResponse.data;
     const id = randomUUID();
 
-    db.set(id, { receipt, points: processReceipt(receipt) });
+    await db.set(id, { receipt });
 
-    return reply.send({ id });
+    reply.send({ id });
+
+    await db.set(id, { receipt, points: await processReceipt(receipt) });
   });
 
   const receiptsPointsParamsValidator = z.object({ id: z.string().uuid() });
-  server.get("/receipts/:id/points", (request, reply) => {
+  server.get("/receipts/:id/points", async (request, reply) => {
     const parseResponse = receiptsPointsParamsValidator.safeParse(
       request.params,
     );
@@ -35,7 +37,7 @@ export const createServer = () => {
       return reply.code(404).send({ message: "Not found." });
     }
 
-    const data = db.get(parseResponse.data.id);
+    const data = await db.get(parseResponse.data.id);
 
     if (data === undefined) {
       return reply.code(404).send({ message: "Not found." });

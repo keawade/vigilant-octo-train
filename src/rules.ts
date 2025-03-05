@@ -15,7 +15,7 @@ const isAlphaNumeric = (str: string) => {
 /**
  * One point for every alphanumeric character in the retailer name.
  */
-export const bigNameRule = (receipt: Receipt): number =>
+export const bigNameRule = async (receipt: Receipt): Promise<number> =>
   receipt.retailer
     .split("")
     .reduce((acc, curr) => (isAlphaNumeric(curr) ? acc + 1 : acc), 0);
@@ -23,19 +23,19 @@ export const bigNameRule = (receipt: Receipt): number =>
 /**
  * 50 points if the total is a round dollar amount with no cents.
  */
-export const noCoinsRule = (receipt: Receipt): number =>
+export const noCoinsRule = async (receipt: Receipt): Promise<number> =>
   Number(receipt.total) % 1 === 0 ? 50 : 0;
 
 /**
  * 25 points if the total is a multiple of 0.25.
  */
-export const quartersRule = (receipt: Receipt): number =>
+export const quartersRule = async (receipt: Receipt): Promise<number> =>
   Number(receipt.total) % 0.25 === 0 ? 25 : 0;
 
 /**
  * 5 points for every two items on the receipt.
  */
-export const everyTwoItemsRule = (receipt: Receipt): number =>
+export const everyTwoItemsRule = async (receipt: Receipt): Promise<number> =>
   5 * Math.floor(receipt.items.length / 2);
 
 /**
@@ -43,7 +43,7 @@ export const everyTwoItemsRule = (receipt: Receipt): number =>
  * the price by 0.2 and round up to the nearest integer. The result is the
  * number of points earned.
  */
-export const itemNameLengthRule = (receipt: Receipt): number => {
+export const itemNameLengthRule = async (receipt: Receipt): Promise<number> => {
   let points = 0;
 
   for (const item of receipt.items) {
@@ -71,13 +71,13 @@ export const itemNameLengthRule = (receipt: Receipt): number => {
 /**
  * 6 points if the day in the purchase date is odd.
  */
-export const dateDayRule = (receipt: Receipt): number =>
+export const dateDayRule = async (receipt: Receipt): Promise<number> =>
   Number(receipt.purchaseDate.split("-")[2]) % 2 === 1 ? 6 : 0;
 
 /*
  * 10 points if the time of purchase is after 2:00pm and before 4:00pm.
  */
-export const midAfternoonRule = (receipt: Receipt): number =>
+export const midAfternoonRule = async (receipt: Receipt): Promise<number> =>
   Number(receipt.purchaseTime.split(":")[0]) >= 14 &&
   Number(receipt.purchaseTime.split(":")[0]) < 16
     ? 10
@@ -86,7 +86,7 @@ export const midAfternoonRule = (receipt: Receipt): number =>
 /**
  * Ordered list of processors for full receipt processing
  */
-const defaultProcessors: Array<(receipt: Receipt) => number> = [
+const defaultProcessors: Array<(receipt: Receipt) => Promise<number>> = [
   bigNameRule,
   noCoinsRule,
   quartersRule,
@@ -95,14 +95,14 @@ const defaultProcessors: Array<(receipt: Receipt) => number> = [
   dateDayRule,
   midAfternoonRule,
 ];
-export const processReceipt = (
+export const processReceipt = async (
   receipt: Receipt,
-  processors: Array<(receipt: Receipt) => number> = defaultProcessors,
-): number => {
+  processors: Array<(receipt: Receipt) => Promise<number>> = defaultProcessors,
+): Promise<number> => {
   let points = 0;
 
   for (const processor of processors) {
-    points += processor(receipt);
+    points += await processor(receipt);
   }
 
   return points;
