@@ -50,6 +50,10 @@ export const createServer = (
       return reply.code(404).send({ message: "Not found." });
     }
 
+    if (data.points === undefined) {
+      return reply.code(400).send({ message: "Not ready." });
+    }
+
     return reply.send({ points: data.points });
   });
 
