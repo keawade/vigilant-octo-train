@@ -1,8 +1,5 @@
 import type { Receipt } from "./receiptSchema";
 
-const wait = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 export interface SimpleDatabase<Record> {
   get: (id: string) => Promise<Record | undefined>;
   set: (id: string, value: Record) => Promise<void>;
