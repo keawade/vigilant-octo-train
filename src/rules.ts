@@ -1,4 +1,6 @@
+import { randomUUID } from "node:crypto";
 import type { Receipt } from "./receiptSchema";
+import { logger } from "./tooling/logger.ts";
 
 const isAlphaNumeric = (str: string) => {
   const char = str.charCodeAt(0);
@@ -99,10 +101,21 @@ export const processReceipt = async (
   receipt: Receipt,
   processors: Array<(receipt: Receipt) => Promise<number>> = defaultProcessors,
 ): Promise<number> => {
+  const executionId = randomUUID();
   let points = 0;
 
+  logger.trace(
+    { executionId, rules: processors.map((processor) => processor.name) },
+    "Processing rules.",
+  );
+
   for (const processor of processors) {
-    points += await processor(receipt);
+    const rulePoints = await processor(receipt);
+    points += rulePoints;
+    logger.trace(
+      { executionId, rules: processor.name, rulePoints, points },
+      "Processed rule.",
+    );
   }
 
   return points;

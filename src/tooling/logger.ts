@@ -8,7 +8,7 @@ const createLoggerOptions = (
     case "development":
       return {
         enabled: true,
-        level: "debug",
+        level: "trace",
         transport: {
           target: "pino-pretty",
           options: {
