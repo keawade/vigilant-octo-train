@@ -4,7 +4,7 @@ export interface SimpleDatabase<Record> {
   get: (id: string) => Promise<Record | undefined>;
   set: (id: string, value: Record) => Promise<void>;
 }
-class Database<Record> implements SimpleDatabase<Record> {
+export class Database<Record> implements SimpleDatabase<Record> {
   store = new Map<string, Record>();
 
   async get(id: string): Promise<Record | undefined> {
@@ -16,6 +16,4 @@ class Database<Record> implements SimpleDatabase<Record> {
   }
 }
 
-type ReceiptRecord = { points?: number; receipt: Receipt };
-
-export const db = new Database<ReceiptRecord>();
+export type ReceiptRecord = { points?: number; receipt: Receipt };

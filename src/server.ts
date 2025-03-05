@@ -1,14 +1,21 @@
 import { randomUUID } from "node:crypto";
 
 import { default as Fastify } from "fastify";
-
-import { logger } from "./tooling/logger.ts";
-import { db } from "./db.ts";
-import { receiptSchema } from "./receiptSchema.ts";
-import { processReceipt } from "./rules.ts";
 import { z } from "zod";
 
-export const createServer = () => {
+import { logger } from "./tooling/logger.ts";
+import {
+  Database,
+  type ReceiptRecord,
+  type SimpleDatabase,
+} from "./database.ts";
+import { receiptSchema } from "./receiptSchema.ts";
+import { processReceipt } from "./rules.ts";
+
+const databaseInstance = new Database<ReceiptRecord>();
+export const createServer = (
+  database: SimpleDatabase<ReceiptRecord> = databaseInstance,
+) => {
   const server = Fastify({ loggerInstance: logger });
 
   server.post("/receipts/process", async (request, reply) => {
@@ -21,11 +28,11 @@ export const createServer = () => {
     const receipt = parseResponse.data;
     const id = randomUUID();
 
-    await db.set(id, { receipt });
+    await database.set(id, { receipt });
 
     reply.send({ id });
 
-    await db.set(id, { receipt, points: await processReceipt(receipt) });
+    await database.set(id, { receipt, points: await processReceipt(receipt) });
   });
 
   const receiptsPointsParamsValidator = z.object({ id: z.string().uuid() });
@@ -37,7 +44,7 @@ export const createServer = () => {
       return reply.code(404).send({ message: "Not found." });
     }
 
-    const data = await db.get(parseResponse.data.id);
+    const data = await database.get(parseResponse.data.id);
 
     if (data === undefined) {
       return reply.code(404).send({ message: "Not found." });
