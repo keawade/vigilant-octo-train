@@ -26,10 +26,11 @@ export const createServer = () => {
     return reply.send({ id });
   });
 
+  const receiptsPointsParamsValidator = z.object({ id: z.string().uuid() });
   server.get("/receipts/:id/points", (request, reply) => {
-    const parseResponse = z
-      .object({ id: z.string().uuid() })
-      .safeParse(request.params);
+    const parseResponse = receiptsPointsParamsValidator.safeParse(
+      request.params,
+    );
     if (!parseResponse.success) {
       return reply.code(404).send({ message: "Not found." });
     }
