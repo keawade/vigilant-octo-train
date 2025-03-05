@@ -83,7 +83,10 @@ export const midAfternoonRule = (receipt: Receipt): number =>
     ? 10
     : 0;
 
-const processors: Array<(receipt: Receipt) => number> = [
+/**
+ * Ordered list of processors for full receipt processing
+ */
+const defaultProcessors: Array<(receipt: Receipt) => number> = [
   bigNameRule,
   noCoinsRule,
   quartersRule,
@@ -92,10 +95,10 @@ const processors: Array<(receipt: Receipt) => number> = [
   dateDayRule,
   midAfternoonRule,
 ];
-/**
- * Combines all receipt processing rules in the preferred order.
- */
-export const processReceipt = (receipt: Receipt): number => {
+export const processReceipt = (
+  receipt: Receipt,
+  processors: Array<(receipt: Receipt) => number> = defaultProcessors,
+): number => {
   let points = 0;
 
   for (const processor of processors) {
