@@ -1,8 +1,6 @@
 # Receipt processor service
 
-The receipt processor service processes receipts to calculate point rewards. It
-stores both the original receipt data and the calculated points and exposes
-endpoints to retrieve them.
+The receipt processor service processes receipts to calculate point rewards.
 
 ## Endpoints
 
